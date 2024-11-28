@@ -6,7 +6,7 @@ authors = ["hauntedcupoftea <andydchauhan@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.12"
+python = ">=3.10,<=3.13"
 crewai = "^0.83.0"
 jsonschema = "^4.23.0"
 jsonresume-validator = "^0.1.5"
