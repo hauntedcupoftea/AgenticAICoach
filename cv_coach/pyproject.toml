@@ -3,17 +3,25 @@ name = "cv-coach"
 version = "0.1.0"
 description = "A CV Reviewer that has a preprocessing pipeline converting resume content to a JSONResume."
 authors = ["hauntedcupoftea <andydchauhan@gmail.com>"]
+license = "MIT"
 readme = "README.md"
 packages = [{include = "agentic_cv_advisor", from = "src"}]
 
 [tool.poetry.dependencies]
 python = ">=3.10,<=3.13"
-crewai = "^0.83.0"
+crewai = {extras = ["tools"], version = "^0.83.0"}
 jsonschema = "^4.23.0"
 jsonresume-validator = "^0.1.5"
 requests = "^2.32.3"
 langchain-openai = "^0.2.10"
+streamlit = "^1.40.2"
+python-dotenv = "^1.0.1"
 
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.3"
+pytest-cov = "^6.0.0"
+flake8 = "^7.1.1"
 
 [build-system]
 requires = ["poetry-core"]
