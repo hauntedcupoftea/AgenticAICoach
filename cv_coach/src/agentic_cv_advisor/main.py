@@ -1,4 +1,5 @@
 import sys
+from time import sleep
 import streamlit as st
 import streamlit.web.cli as stcli
 import logging
@@ -17,7 +18,13 @@ logging.basicConfig(level=logging.INFO)
 
 # App logic
 def Agentic_CV_Coach():
-    st.header("Agentic CV Coach with SQLite Integration")
+    st.header("Agentic")
+    st.warning(
+        "This is a prototype with no safety and authentication implementations, use at own risk."
+    )
+    st.info(
+        "This application stores your data, included any uploaded CVs, but does not share it with anyone."
+    )
 
     # Initialize the database
     init_db()
@@ -37,36 +44,38 @@ def Agentic_CV_Coach():
             for cv_id, filename, uploaded_at in cvs:
                 st.sidebar.write(f"**{filename}** (Uploaded: {uploaded_at})")
                 if st.sidebar.button(f"Select {filename}", key=f"select_{cv_id}"):
+                    # Clear previous messages and load new chat history
                     st.session_state.selected_cv_id = cv_id
-                    st.session_state.messages.append(
+                    st.session_state.messages = [
                         {
                             "role": "assistant",
-                            "content": f"You've selected CV: {filename}. You can now ask questions about it.",
+                            "content": f"Currently offering help on CV: **{filename}** (Uploaded: {uploaded_at}). Feel free to ask me questions.",
                         }
-                    )
+                    ]
+
+                    # Retrieve chat history for this specific CV
+                    saved_history = get_chat_history(cv_id)
+                    saved_history = get_chat_history(cv_id)
+                    for user_msg, assistant_msg, _ in saved_history:
+                        if user_msg:
+                            st.session_state.messages.append(
+                                {"role": "user", "content": user_msg}
+                            )
+                        if assistant_msg:
+                            st.session_state.messages.append(
+                                {"role": "assistant", "content": assistant_msg}
+                            )
         else:
             st.sidebar.info("No CVs uploaded yet.")
 
-    # Initialize session state for chat history
+    # Initialize session state for chat history if not exists
     if "messages" not in st.session_state:
-        # Fetch chat history from the database
-        saved_history = get_chat_history()
         st.session_state.messages = [
-            (
-                {"role": "user", "content": user_msg}
-                if user_msg
-                else {"role": "assistant", "content": assistant_msg}
-            )
-            for user_msg, assistant_msg, _ in saved_history
+            {
+                "role": "assistant",
+                "content": "Welcome to the CV Coach. I will help you improve and tailor your CV according to your needs.",
+            }
         ]
-        # Add a welcome message if no history is found
-        if not st.session_state.messages:
-            st.session_state.messages = [
-                {
-                    "role": "assistant",
-                    "content": "Welcome! Please upload a CV to start.",
-                }
-            ]
 
     # Display previous conversation
     for message in st.session_state.messages:
@@ -84,8 +93,9 @@ def Agentic_CV_Coach():
 
                 # Simulate assistant response
                 with st.chat_message("assistant"):
-                    with st.spinner("Analyzing..."):
+                    with st.spinner("Thinking..."):
                         try:
+                            sleep(3)
                             # Placeholder for agent logic
                             response = f"Analyzing CV and responding to: {prompt}"
                             st.session_state.messages.append(
@@ -93,8 +103,12 @@ def Agentic_CV_Coach():
                             )
                             st.write(response)
 
-                            # Save conversation to database
-                            save_chat_to_db(prompt, response)
+                            # Save conversation to database with CV ID
+                            save_chat_to_db(
+                                user_message=prompt,
+                                assistant_message=response,
+                                cv_id=st.session_state.selected_cv_id,
+                            )
                         except Exception as e:
                             logging.error(f"Error processing query: {e}")
                             st.error(
