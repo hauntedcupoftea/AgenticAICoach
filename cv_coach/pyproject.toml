@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "cv-coach"
+version = "0.1.0"
+description = "A CV Reviewer that has a preprocessing pipeline converting resume content to a JSONResume."
+authors = ["hauntedcupoftea <andydchauhan@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+crewai = "^0.83.0"
+jsonschema = "^4.23.0"
+jsonresume-validator = "^0.1.5"
+requests = "^2.32.3"
+langchain-openai = "^0.2.10"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
