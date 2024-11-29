@@ -1,23 +1,52 @@
 from crewai import Agent
 
-def create_learning_CV_coach(tools, llm_gpt4o):
-    """
-    Creates a learning CV coach agent responsible for searching through CVs (.CV/.docx) and
-    answering user questions based on the contents of those documents.
 
-    Args:
-        tools (list): List of tools that the agent will use, such as PDFSearchTool for document searching.
-        llm_gpt4o (LLM): The language model instance (e.g., GPT-4) that the agent uses for generating responses.
-
-    Returns:
-        Agent: The initialized agent configured to handle CV search tasks and respond to user queries.
-    """
+def create_file_preprocessor_agent(tools, llm):
     return Agent(
-        role="Document Search Agent",
-        goal="Search through all uploaded documents to find relevant answers.",
-        backstory="An agent adept at searching and extracting data from multiple documents.",
+        role="CV File Preprocessor",
+        goal="Convert uploaded CVs to a standardized format for analysis",
+        backstory="Expert in document conversion and resume standardization",
         tools=tools,
-        max_execution_time=300,
         verbose=True,
-        llm=llm_gpt4o
+        llm=llm,
+    )
+
+
+def create_structure_analysis_agent(llm):
+    return Agent(
+        role="CV Structure Analyst",
+        goal="Evaluate CV structure and section completeness",
+        backstory="Professional recruiter specializing in resume optimization",
+        verbose=True,
+        llm=llm,
+    )
+
+
+def create_keyword_analysis_agent(llm):
+    return Agent(
+        role="Industry Keyword Specialist",
+        goal="Analyze and suggest industry-specific keywords",
+        backstory="Recruitment expert with deep understanding of keyword optimization",
+        verbose=True,
+        llm=llm,
+    )
+
+
+def create_formatting_agent(llm):
+    return Agent(
+        role="CV Formatting Expert",
+        goal="Assess and recommend CV formatting improvements",
+        backstory="Design professional with expertise in resume visual presentation",
+        verbose=True,
+        llm=llm,
+    )
+
+
+def create_content_quality_agent(llm):
+    return Agent(
+        role="Content Quality Enhancer",
+        goal="Improve CV content quality and professional language",
+        backstory="Senior career coach specializing in resume writing",
+        verbose=True,
+        llm=llm,
     )

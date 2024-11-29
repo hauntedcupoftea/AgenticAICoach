@@ -1,0 +1,25 @@
+cv_review_tasks:
+  preprocess_cv:
+    description: Extract and standardize CV content for analysis
+    agent: file_preprocessor
+    expected_output: Standardized CV content ready for review
+
+  structure_analysis:
+    description: Analyze CV structure and section completeness
+    agent: structure_analyst
+    expected_output: Detailed structural recommendations and scoring
+
+  keyword_analysis:
+    description: Perform industry-specific keyword analysis
+    agent: keyword_specialist
+    expected_output: Keyword optimization recommendations
+
+  formatting_review:
+    description: Review CV formatting and visual presentation
+    agent: formatting_expert
+    expected_output: Formatting improvement suggestions
+
+  content_improvement:
+    description: Enhance CV content quality and professional language
+    agent: content_enhancer
+    expected_output: Content quality and language improvement recommendations
