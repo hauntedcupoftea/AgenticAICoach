@@ -1,5 +1,6 @@
 import sys
 from time import sleep
+from agentic_cv_advisor.crews import review_cv
 import streamlit as st
 import streamlit.web.cli as stcli
 import logging
@@ -17,8 +18,8 @@ logging.basicConfig(level=logging.INFO)
 
 
 # App logic
-def Agentic_CV_Coach():
-    st.header("Agentic")
+def CV_Coach():
+    st.header("CV Coach")
     st.warning(
         "This is a prototype with no safety and authentication implementations, use at own risk."
     )
@@ -93,17 +94,22 @@ def Agentic_CV_Coach():
 
                 # Simulate assistant response
                 with st.chat_message("assistant"):
-                    with st.spinner("Thinking..."):
+                    with st.spinner("Analyzing your CV..."):
                         try:
-                            sleep(3)
-                            # Placeholder for agent logic
-                            response = f"Analyzing CV and responding to: {prompt}"
+                            # Get CV content from database
+                            selected_cv_content = get_cv_content(
+                                st.session_state.selected_cv_id
+                            )
+
+                            # Perform CV review
+                            response = review_cv(selected_cv_content, prompt)
+
                             st.session_state.messages.append(
                                 {"role": "assistant", "content": response}
                             )
                             st.write(response)
 
-                            # Save conversation to database with CV ID
+                            # Save conversation to database
                             save_chat_to_db(
                                 user_message=prompt,
                                 assistant_message=response,
@@ -127,4 +133,4 @@ def run():
 
 
 if __name__ == "__main__":
-    Agentic_CV_Coach()
+    CV_Coach()
