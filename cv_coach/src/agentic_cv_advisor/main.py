@@ -36,6 +36,7 @@ def CV_Coach():
             "Upload your CV (PDF or DOCX)", type=["pdf", "docx"]
         )
         if uploaded_file and st.button("Save CV"):
+
             save_cv_to_db(uploaded_file)
             st.sidebar.success("CV uploaded successfully!")
 
